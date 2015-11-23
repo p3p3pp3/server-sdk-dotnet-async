@@ -1,40 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections;
 using System.Web;
 
 namespace io.rong
 {
     public class RongCloudServer
     {
-
         /**
          * 构建请求参数
          */
-        private static String buildQueryStr(Dictionary<String, String> dicList)
+
+        private static string BuildQueryStr(Dictionary<string, string> dicList)
         {
-            String postStr = "";
+            var postStr = "";
 
             foreach (var item in dicList)
             {
-                postStr += item.Key + "=" + HttpUtility.UrlEncode(item.Value,Encoding.UTF8) + "&";
+                postStr += item.Key + "=" + HttpUtility.UrlEncode(item.Value, Encoding.UTF8) + "&";
             }
             postStr = postStr.Substring(0, postStr.LastIndexOf('&'));
             return postStr;
         }
 
-        private static String buildParamStr(String[] arrParams)
+        private static string BuildParamStr(string[] arrParams)
         {
-            String postStr = "";
+            var postStr = "";
 
-            for (int i = 0; i < arrParams.Length; i++)
+            for (var i = 0; i < arrParams.Length; i++)
             {
                 if (0 == i)
                 {
-                    postStr = "chatroomId=" + HttpUtility.UrlDecode(arrParams[0],Encoding.UTF8);
+                    postStr = "chatroomId=" + HttpUtility.UrlDecode(arrParams[0], Encoding.UTF8);
                 }
                 else
                 {
@@ -47,81 +44,84 @@ namespace io.rong
         /**
          * 获取 token
          */
-        public static String GetToken(String appkey,String appSecret,String userId, String name, String portraitUri)
+
+        public static async Task<string> GetTokenAsync(string appkey, string appSecret, string userId, string name, string portraitUri)
         {
-            Dictionary<String, String> dicList = new Dictionary<String, String>();
+            var dicList = new Dictionary<string, string>();
             dicList.Add("userId", userId);
             dicList.Add("name", name);
             dicList.Add("portraitUri", portraitUri);
 
-            String postStr = buildQueryStr(dicList);
+            var postStr = BuildQueryStr(dicList);
 
-            RongHttpClient client = new RongHttpClient(appkey, appSecret, InterfaceUrl.getTokenUrl, postStr);
+            var client = new RongHttpClient(appkey, appSecret, InterfaceUrl.GetTokenUrl, postStr);
 
-            return client.ExecutePost();
-
+            return await client.ExecutePostAsync().ConfigureAwait(false);
         }
 
         /**
          * 加入 群组
          */
-        public static String JoinGroup(String appkey, String appSecret, String userId, String groupId, String groupName)
+
+        public static async Task<string> JoinGroupAsync(string appkey, string appSecret, string userId, string groupId, string groupName)
         {
-            Dictionary<String, String> dicList = new Dictionary<String, String>();
+            var dicList = new Dictionary<string, string>();
             dicList.Add("userId", userId);
             dicList.Add("groupId", groupId);
             dicList.Add("groupName", groupName);
 
-            String postStr = buildQueryStr(dicList);
+            var postStr = BuildQueryStr(dicList);
 
-            RongHttpClient client = new RongHttpClient(appkey, appSecret, InterfaceUrl.joinGroupUrl, postStr);
+            var client = new RongHttpClient(appkey, appSecret, InterfaceUrl.JoinGroupUrl, postStr);
 
-            return client.ExecutePost();
+            return await client.ExecutePostAsync().ConfigureAwait(false);
         }
 
         /**
          * 退出 群组
          */
-        public static String QuitGroup(String appkey, String appSecret, String userId, String groupId)
+
+        public static async Task<string> QuitGroupAsync(string appkey, string appSecret, string userId, string groupId)
         {
-            Dictionary<String, String> dicList = new Dictionary<String, String>();
+            var dicList = new Dictionary<string, string>();
             dicList.Add("userId", userId);
             dicList.Add("groupId", groupId);
 
-            String postStr = buildQueryStr(dicList);
+            var postStr = BuildQueryStr(dicList);
 
-            RongHttpClient client = new RongHttpClient(appkey, appSecret, InterfaceUrl.quitGroupUrl, postStr);
+            var client = new RongHttpClient(appkey, appSecret, InterfaceUrl.QuitGroupUrl, postStr);
 
-            return client.ExecutePost();
+            return await client.ExecutePostAsync().ConfigureAwait(false);
         }
 
         /**
          * 解散 群组
          */
-        public static String DismissGroup(String appkey, String appSecret, String userId, String groupId)
+
+        public static async Task<string> DismissGroupAsync(string appkey, string appSecret, string userId, string groupId)
         {
-            Dictionary<String, String> dicList = new Dictionary<String, String>();
+            var dicList = new Dictionary<string, string>();
             dicList.Add("userId", userId);
             dicList.Add("groupId", groupId);
 
-            String postStr = buildQueryStr(dicList);
+            var postStr = BuildQueryStr(dicList);
 
-            RongHttpClient client = new RongHttpClient(appkey, appSecret, InterfaceUrl.dismissUrl, postStr);
+            var client = new RongHttpClient(appkey, appSecret, InterfaceUrl.DismissUrl, postStr);
 
-            return client.ExecutePost();
-
+            return await client.ExecutePostAsync().ConfigureAwait(false);
         }
-        
+
         /**
          * 同步群组
          */
-        public static String syncGroup(String appkey, String appSecret, String userId, String[] groupId, String[] groupName)
-        {
-            
-            String postStr = "userId=" + userId + "&";
-            String id, name;
 
-            for (int i = 0; i < groupId.Length; i++)
+        public static async Task<string> SyncGroupAsync(string appkey, string appSecret, string userId, string[] groupId,
+            string[] groupName)
+        {
+            var postStr = "userId=" + userId + "&";
+            string id, name;
+
+            for (var i = 0; i < groupId.Length; i++)
             {
                 id = HttpUtility.UrlEncode(groupId[i], Encoding.UTF8);
                 name = HttpUtility.UrlEncode(groupName[i], Encoding.UTF8);
@@ -130,73 +130,81 @@ namespace io.rong
 
             postStr = postStr.Substring(0, postStr.LastIndexOf('&'));
 
-            RongHttpClient client = new RongHttpClient(appkey, appSecret, InterfaceUrl.syncGroupUrl, postStr);
+            var client = new RongHttpClient(appkey, appSecret, InterfaceUrl.SyncGroupUrl, postStr);
 
-            return client.ExecutePost();
+            return await client.ExecutePostAsync().ConfigureAwait(false);
         }
 
-        
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="appkey"></param>
         /// <param name="appSecret"></param>
         /// <param name="fromUserId"></param>
         /// <param name="toUserId"></param>
         /// <param name="objectName"></param>
-        /// <param name="content">RC:TxtMsg消息格式{"content":"hello"}  RC:ImgMsg消息格式{"content":"ergaqreg", "imageKey":"http://www.demo.com/1.jpg"}  RC:VcMsg消息格式{"content":"ergaqreg","duration":3}</param>
+        /// <param name="content">
+        ///     RC:TxtMsg消息格式{"content":"hello"}  RC:ImgMsg消息格式{"content":"ergaqreg",
+        ///     "imageKey":"http://www.demo.com/1.jpg"}  RC:VcMsg消息格式{"content":"ergaqreg","duration":3}
+        /// </param>
         /// <returns></returns>
-        public static String PublishMessage(String appkey, String appSecret, String fromUserId, String toUserId, String objectName, String content)
+        public static async Task<string> PublishMessageAsync(string appkey, string appSecret, string fromUserId, string toUserId,
+            string objectName, string content)
         {
-            Dictionary<String, String> dicList = new Dictionary<String, String>();
+            var dicList = new Dictionary<string, string>();
             dicList.Add("fromUserId", fromUserId);
             dicList.Add("toUserId", toUserId);
             dicList.Add("objectName", objectName);
             dicList.Add("content", content);
 
-            String postStr = buildQueryStr(dicList);
+            var postStr = BuildQueryStr(dicList);
 
-            RongHttpClient client = new RongHttpClient(appkey, appSecret, InterfaceUrl.sendMsgUrl, postStr);
+            var client = new RongHttpClient(appkey, appSecret, InterfaceUrl.SendMsgUrl, postStr);
 
-            return client.ExecutePost();
+            return await client.ExecutePostAsync().ConfigureAwait(false);
         }
+
         /// <summary>
-        /// 广播消息暂时未开放
+        ///     广播消息暂时未开放
         /// </summary>
         /// <param name="appkey"></param>
         /// <param name="appSecret"></param>
         /// <param name="fromUserId"></param>
         /// <param name="objectName"></param>
-        /// <param name="content">RC:TxtMsg消息格式{"content":"hello"}  RC:ImgMsg消息格式{"content":"ergaqreg", "imageKey":"http://www.demo.com/1.jpg"}  RC:VcMsg消息格式{"content":"ergaqreg","duration":3}</param>
+        /// <param name="content">
+        ///     RC:TxtMsg消息格式{"content":"hello"}  RC:ImgMsg消息格式{"content":"ergaqreg",
+        ///     "imageKey":"http://www.demo.com/1.jpg"}  RC:VcMsg消息格式{"content":"ergaqreg","duration":3}
+        /// </param>
         /// <returns></returns>
-        public static String BroadcastMessage(String appkey, String appSecret, String fromUserId, String objectName, String content)
+        public static async Task<string> BroadcastMessageAsync(string appkey, string appSecret, string fromUserId, string objectName,
+            string content)
         {
-            Dictionary<String, String> dicList = new Dictionary<String, String>();
-            dicList.Add("content", content);
-            dicList.Add("fromUserId", fromUserId);
-            dicList.Add("objectName", objectName);
-            dicList.Add("pushContent", "");
-            dicList.Add("pushData", "");
+            var dicList = new Dictionary<string, string>
+            {
+                {"content", content},
+                {"fromUserId", fromUserId},
+                {"objectName", objectName},
+                {"pushContent", ""},
+                {"pushData", ""}
+            };
 
-            String postStr = buildQueryStr(dicList);
-            RongHttpClient client = new RongHttpClient(appkey, appSecret, InterfaceUrl.broadcastUrl, postStr);
+            var postStr = BuildQueryStr(dicList);
+            var client = new RongHttpClient(appkey, appSecret, InterfaceUrl.BroadcastUrl, postStr);
 
-            return client.ExecutePost();
+            return await client.ExecutePostAsync().ConfigureAwait(false);
         }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="appkey"></param>
         /// <param name="appSecret"></param>
-        /// <param name="chatroomInfo">chatroom[id10001]=name1001</param>
         /// <returns></returns>
-        public static String CreateChatroom(String appkey, String appSecret, String[] chatroomId, String[] chatroomName)
+        public static async Task<string> CreateChatroomAsync(string appkey, string appSecret, string[] chatroomId, string[] chatroomName)
         {
-            String postStr = null;
+            string postStr = null;
 
-            String id, name;
+            string id, name;
 
-            for (int i = 0; i < chatroomId.Length; i++)
+            for (var i = 0; i < chatroomId.Length; i++)
             {
                 id = HttpUtility.UrlEncode(chatroomId[i], Encoding.UTF8);
                 name = HttpUtility.UrlEncode(chatroomName[i], Encoding.UTF8);
@@ -205,36 +213,37 @@ namespace io.rong
 
             postStr = postStr.Substring(0, postStr.LastIndexOf('&'));
 
-            RongHttpClient client = new RongHttpClient(appkey, appSecret, InterfaceUrl.createChatroomUrl, postStr);
+            var client = new RongHttpClient(appkey, appSecret, InterfaceUrl.CreateChatroomUrl, postStr);
 
-            return client.ExecutePost();
+            return await client.ExecutePostAsync().ConfigureAwait(false);
         }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="appkey"></param>
         /// <param name="appSecret"></param>
         /// <param name="chatroomIdInfo">chatroomId=id1001</param>
         /// <returns></returns>
-        public static String DestroyChatroom(String appkey, String appSecret, String[] chatroomIdInfo)
+        public static async Task<string> DestroyChatroomAsync(string appkey, string appSecret, string[] chatroomIdInfo)
         {
-            String postStr = null;
-            
-            postStr = buildParamStr(chatroomIdInfo);
+            string postStr = null;
 
-            RongHttpClient client = new RongHttpClient(appkey, appSecret, InterfaceUrl.destroyChatroomUrl, postStr);
+            postStr = BuildParamStr(chatroomIdInfo);
 
-            return client.ExecutePost();
+            var client = new RongHttpClient(appkey, appSecret, InterfaceUrl.DestroyChatroomUrl, postStr);
+
+            return await client.ExecutePostAsync().ConfigureAwait(false);
         }
-        public static String queryChatroom(String appkey, String appSecret, String[] chatroomId)
+
+        public static async Task<string> QueryChatroomAsync(string appkey, string appSecret, string[] chatroomId)
         {
-            String postStr = null;
-            
-            postStr = buildParamStr(chatroomId);
+            string postStr = null;
 
-            RongHttpClient client = new RongHttpClient(appkey, appSecret, InterfaceUrl.queryChatroomUrl, postStr);
+            postStr = BuildParamStr(chatroomId);
 
-            return client.ExecutePost();
+            var client = new RongHttpClient(appkey, appSecret, InterfaceUrl.QueryChatroomUrl, postStr);
+
+            return await client.ExecutePostAsync().ConfigureAwait(false);
         }
     }
 }

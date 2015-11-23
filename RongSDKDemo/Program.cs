@@ -1,60 +1,60 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using io.rong;
 
 namespace RongSDKDemo
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            String retstr = null;
-            String appKey = "uwd1c0sxdlx91";
-            String appSecret = "hhetmryhVm";
-            retstr = RongCloudServer.GetToken(appKey, appSecret, "232424", "xugang", "http://www.qqw21.com/article/UploadPic/2012-11/201211259378560.jpg");
+            string retstr = null;
+            const string appKey = "k51hidwq1bu1b";
+            const string appSecret = "B6GaMZVg2z";
+
+            retstr = RongCloudServer.GetTokenAsync(appKey, appSecret, "232424", "xugang",
+                "http://www.qqw21.com/article/UploadPic/2012-11/201211259378560.jpg").Result;
             Console.WriteLine("getToken: " + retstr);
             Console.ReadKey();
 
-            retstr = RongCloudServer.JoinGroup(appKey, appSecret, "232424", "group001","wsw");
+            retstr = RongCloudServer.JoinGroupAsync(appKey, appSecret, "232424", "group001", "wsw").Result;
             Console.WriteLine("joinGroup: " + retstr);
             Console.ReadKey();
 
-            string[] arrId = { "group001", "group002", "group003" };
+            string[] arrId = {"group001", "group002", "group003"};
             string[] arrName = {"测试 01", "测试 02", "测试 03"};
-            retstr = RongCloudServer.syncGroup(appKey, appSecret, "42424", arrId, arrName );
+            retstr = RongCloudServer.SyncGroupAsync(appKey, appSecret, "42424", arrId, arrName).Result;
             Console.WriteLine("syncGroup: " + retstr);
             Console.ReadKey();
 
-            retstr = RongCloudServer.DismissGroup(appKey, appSecret, "42424", "group001");
+            retstr = RongCloudServer.DismissGroupAsync(appKey, appSecret, "42424", "group001").Result;
             Console.WriteLine("dismissgroup: " + retstr);
             Console.ReadKey();
 
-            retstr = RongCloudServer.PublishMessage(appKey, appSecret, "2191", "2191", "RC:TxtMsg", "{\"content\":\"c#hello\"}");
-            Console.WriteLine("PublishMsg: "  + retstr);
+            retstr = RongCloudServer.PublishMessageAsync(appKey, appSecret, "2191", "2191", "RC:TxtMsg",
+                "{\"content\":\"c#hello\"}").Result;
+            Console.WriteLine("PublishMsg: " + retstr);
             Console.ReadKey();
 
-            retstr = RongCloudServer.BroadcastMessage(appKey, appSecret, "2191", "RC:TxtMsg", "{\"content\":\"c#hello\"}");
+            retstr = RongCloudServer.BroadcastMessageAsync(appKey, appSecret, "2191", "RC:TxtMsg",
+                "{\"content\":\"c#hello\"}").Result;
             Console.WriteLine("Broad: " + retstr);
             Console.ReadKey();
 
-            retstr = RongCloudServer.JoinGroup(appKey, appSecret, "423424", "dwef", "dwef");
+            retstr = RongCloudServer.JoinGroupAsync(appKey, appSecret, "423424", "dwef", "dwef").Result;
             Console.WriteLine("JoinGroup: " + retstr);
             Console.ReadKey();
 
-            retstr = RongCloudServer.CreateChatroom(appKey, appSecret, arrId, arrName);
+            retstr = RongCloudServer.CreateChatroomAsync(appKey, appSecret, arrId, arrName).Result;
             Console.WriteLine("createChat: " + retstr);
             Console.ReadKey();
 
-            retstr = RongCloudServer.DestroyChatroom(appKey, appSecret, new String[]{"001", "002"});
+            retstr = RongCloudServer.DestroyChatroomAsync(appKey, appSecret, new[] {"001", "002"}).Result;
             Console.WriteLine("Destroy: " + retstr);
             Console.ReadKey();
 
-            string[] aaa = { "group002", "group003" };
+            string[] aaa = {"group002", "group003"};
 
-            retstr = RongCloudServer.queryChatroom(appKey, appSecret, aaa);
+            retstr = RongCloudServer.QueryChatroomAsync(appKey, appSecret, aaa).Result;
             Console.WriteLine("queryChatroom: " + retstr);
 
             Console.ReadKey();
