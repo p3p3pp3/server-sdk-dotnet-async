@@ -1,7 +1,12 @@
-server-sdk-dotnet master v2.0
+server-sdk-dotnet-Async master v2.0
 =================
 
-Rong Cloud Server SDK in .NET.
+Rong Cloud Server SDK in .NET 4.5 or later
+
+2015-11-23
+更新记录：
+1、清理代码，规范拼写。
+2、将代码改写为异步模式。
 
 2015-06-26
 更新记录：
