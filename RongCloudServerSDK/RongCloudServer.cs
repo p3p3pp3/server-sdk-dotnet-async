@@ -41,16 +41,23 @@ namespace io.rong
             return postStr;
         }
 
-        /**
-         * 获取 token
-         */
-
+        /// <summary>
+        /// 获取Token
+        /// </summary>
+        /// <param name="appkey"></param>
+        /// <param name="appSecret"></param>
+        /// <param name="userId"></param>
+        /// <param name="name"></param>
+        /// <param name="portraitUri"></param>
+        /// <returns></returns>
         public static async Task<string> GetTokenAsync(string appkey, string appSecret, string userId, string name, string portraitUri)
         {
-            var dicList = new Dictionary<string, string>();
-            dicList.Add("userId", userId);
-            dicList.Add("name", name);
-            dicList.Add("portraitUri", portraitUri);
+            var dicList = new Dictionary<string, string>
+            {
+                {"userId", userId},
+                {"name", name},
+                {"portraitUri", portraitUri}
+            };
 
             var postStr = BuildQueryStr(dicList);
 
@@ -59,16 +66,23 @@ namespace io.rong
             return await client.ExecutePostAsync().ConfigureAwait(false);
         }
 
-        /**
-         * 加入 群组
-         */
-
+        /// <summary>
+        /// 加入群组
+        /// </summary>
+        /// <param name="appkey"></param>
+        /// <param name="appSecret"></param>
+        /// <param name="userId"></param>
+        /// <param name="groupId"></param>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
         public static async Task<string> JoinGroupAsync(string appkey, string appSecret, string userId, string groupId, string groupName)
         {
-            var dicList = new Dictionary<string, string>();
-            dicList.Add("userId", userId);
-            dicList.Add("groupId", groupId);
-            dicList.Add("groupName", groupName);
+            var dicList = new Dictionary<string, string>
+            {
+                {"userId", userId},
+                {"groupId", groupId},
+                {"groupName", groupName}
+            };
 
             var postStr = BuildQueryStr(dicList);
 
@@ -77,15 +91,22 @@ namespace io.rong
             return await client.ExecutePostAsync().ConfigureAwait(false);
         }
 
-        /**
-         * 退出 群组
-         */
 
+        /// <summary>
+        /// 退出群组
+        /// </summary>
+        /// <param name="appkey"></param>
+        /// <param name="appSecret"></param>
+        /// <param name="userId"></param>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
         public static async Task<string> QuitGroupAsync(string appkey, string appSecret, string userId, string groupId)
         {
-            var dicList = new Dictionary<string, string>();
-            dicList.Add("userId", userId);
-            dicList.Add("groupId", groupId);
+            var dicList = new Dictionary<string, string>
+            {
+                {"userId", userId},
+                { "groupId", groupId}
+            };
 
             var postStr = BuildQueryStr(dicList);
 
@@ -94,15 +115,21 @@ namespace io.rong
             return await client.ExecutePostAsync().ConfigureAwait(false);
         }
 
-        /**
-         * 解散 群组
-         */
-
+        /// <summary>
+        /// 解散群组
+        /// </summary>
+        /// <param name="appkey"></param>
+        /// <param name="appSecret"></param>
+        /// <param name="userId"></param>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
         public static async Task<string> DismissGroupAsync(string appkey, string appSecret, string userId, string groupId)
         {
-            var dicList = new Dictionary<string, string>();
-            dicList.Add("userId", userId);
-            dicList.Add("groupId", groupId);
+            var dicList = new Dictionary<string, string>
+            {
+                {"userId", userId},
+                { "groupId", groupId}
+            };
 
             var postStr = BuildQueryStr(dicList);
 
@@ -111,20 +138,24 @@ namespace io.rong
             return await client.ExecutePostAsync().ConfigureAwait(false);
         }
 
-        /**
-         * 同步群组
-         */
-
+        /// <summary>
+        /// 同步群组
+        /// </summary>
+        /// <param name="appkey"></param>
+        /// <param name="appSecret"></param>
+        /// <param name="userId"></param>
+        /// <param name="groupId"></param>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
         public static async Task<string> SyncGroupAsync(string appkey, string appSecret, string userId, string[] groupId,
             string[] groupName)
         {
             var postStr = "userId=" + userId + "&";
-            string id, name;
 
             for (var i = 0; i < groupId.Length; i++)
             {
-                id = HttpUtility.UrlEncode(groupId[i], Encoding.UTF8);
-                name = HttpUtility.UrlEncode(groupName[i], Encoding.UTF8);
+                var id = HttpUtility.UrlEncode(groupId[i], Encoding.UTF8);
+                var name = HttpUtility.UrlEncode(groupName[i], Encoding.UTF8);
                 postStr += "group[" + id + "]=" + name + "&";
             }
 
@@ -136,6 +167,7 @@ namespace io.rong
         }
 
         /// <summary>
+        /// 发送消息
         /// </summary>
         /// <param name="appkey"></param>
         /// <param name="appSecret"></param>
@@ -150,11 +182,13 @@ namespace io.rong
         public static async Task<string> PublishMessageAsync(string appkey, string appSecret, string fromUserId, string toUserId,
             string objectName, string content)
         {
-            var dicList = new Dictionary<string, string>();
-            dicList.Add("fromUserId", fromUserId);
-            dicList.Add("toUserId", toUserId);
-            dicList.Add("objectName", objectName);
-            dicList.Add("content", content);
+            var dicList = new Dictionary<string, string>
+            {
+                {"fromUserId", fromUserId},
+                {"toUserId", toUserId},
+                {"objectName", objectName},
+                {"content", content}
+            };
 
             var postStr = BuildQueryStr(dicList);
 
@@ -164,7 +198,7 @@ namespace io.rong
         }
 
         /// <summary>
-        ///     广播消息暂时未开放
+        /// 广播消息暂时未开放
         /// </summary>
         /// <param name="appkey"></param>
         /// <param name="appSecret"></param>
@@ -194,20 +228,21 @@ namespace io.rong
         }
 
         /// <summary>
+        /// 创建聊天室
         /// </summary>
         /// <param name="appkey"></param>
         /// <param name="appSecret"></param>
+        /// <param name="chatroomId"></param>
+        /// <param name="chatroomName"></param>
         /// <returns></returns>
         public static async Task<string> CreateChatroomAsync(string appkey, string appSecret, string[] chatroomId, string[] chatroomName)
         {
             string postStr = null;
 
-            string id, name;
-
             for (var i = 0; i < chatroomId.Length; i++)
             {
-                id = HttpUtility.UrlEncode(chatroomId[i], Encoding.UTF8);
-                name = HttpUtility.UrlEncode(chatroomName[i], Encoding.UTF8);
+                var id = HttpUtility.UrlEncode(chatroomId[i], Encoding.UTF8);
+                var name = HttpUtility.UrlEncode(chatroomName[i], Encoding.UTF8);
                 postStr += "chatroom[" + id + "]=" + name + "&";
             }
 
@@ -219,6 +254,7 @@ namespace io.rong
         }
 
         /// <summary>
+        /// 销毁聊天室
         /// </summary>
         /// <param name="appkey"></param>
         /// <param name="appSecret"></param>
@@ -226,20 +262,23 @@ namespace io.rong
         /// <returns></returns>
         public static async Task<string> DestroyChatroomAsync(string appkey, string appSecret, string[] chatroomIdInfo)
         {
-            string postStr = null;
-
-            postStr = BuildParamStr(chatroomIdInfo);
+            var postStr = BuildParamStr(chatroomIdInfo);
 
             var client = new RongHttpClient(appkey, appSecret, InterfaceUrl.DestroyChatroomUrl, postStr);
 
             return await client.ExecutePostAsync().ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// 查询聊天室
+        /// </summary>
+        /// <param name="appkey"></param>
+        /// <param name="appSecret"></param>
+        /// <param name="chatroomId"></param>
+        /// <returns></returns>
         public static async Task<string> QueryChatroomAsync(string appkey, string appSecret, string[] chatroomId)
         {
-            string postStr = null;
-
-            postStr = BuildParamStr(chatroomId);
+            var postStr = BuildParamStr(chatroomId);
 
             var client = new RongHttpClient(appkey, appSecret, InterfaceUrl.QueryChatroomUrl, postStr);
 

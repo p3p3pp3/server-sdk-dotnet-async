@@ -7,7 +7,7 @@ namespace RongSDKDemo
     {
         private static void Main(string[] args)
         {
-            string retstr = null;
+            string retstr;
             const string appKey = "k51hidwq1bu1b";
             const string appSecret = "B6GaMZVg2z";
 

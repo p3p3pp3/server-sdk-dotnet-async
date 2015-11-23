@@ -58,7 +58,7 @@ namespace io.rong
 
             try
             {
-                myResponse =  (HttpWebResponse)await myRequest.GetResponseAsync().ConfigureAwait(false);
+                myResponse = (HttpWebResponse) await myRequest.GetResponseAsync().ConfigureAwait(false);
                 var reader = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
 
                 var content = await reader.ReadToEndAsync().ConfigureAwait(false);
@@ -72,7 +72,7 @@ namespace io.rong
                 {
                     using (var reader = new StreamReader(errData))
                     {
-                        var text =await reader.ReadToEndAsync().ConfigureAwait(false);
+                        var text = await reader.ReadToEndAsync().ConfigureAwait(false);
 
                         return text;
                     }
@@ -82,7 +82,7 @@ namespace io.rong
         }
 
         /// <summary>
-        ///     DateTime时间格式转换为Unix时间戳格式
+        /// DateTime时间格式转换为Unix时间戳格式
         /// </summary>
         /// <param name="time"> DateTime时间格式</param>
         /// <returns>Unix时间戳格式</returns>
@@ -111,7 +111,7 @@ namespace io.rong
         }
 
         /// <summary>
-        ///     Certificate validation callback.
+        /// Certificate validation callback.
         /// </summary>
         private static bool ValidateRemoteCertificate(object sender, X509Certificate cert, X509Chain chain,
             SslPolicyErrors error)
